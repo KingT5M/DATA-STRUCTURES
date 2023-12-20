@@ -55,7 +55,27 @@ class ToDoList:
         else:
             print(f"Task {task} is not in new tasks")
             
+    def deleteTask(self, month, week, day, task):
+        if task in self.to_do_list[month][week][day][0]:
+            status = 'New'
+        elif task in self.to_do_list[month][week][day][1]:
+            status = 'Completed'
+        else:
+            print(f"Task {task} not found.")
             
+        #find the index for our task in the 'New' or 'Completed' sublists
+        taskIndex = None
+        for index, sublist in enumerate(self.to_do_list[month][week][day][0] if status == 'New' else self.to_do_list[month][week][day][1]):
+            if task in sublist:
+                taskIndex = index
+                break
+        if taskIndex is not None:    
+            #Delete task from its current position
+            deletedTask = self.to_do_list[month][week][day][0 if status == 'New' else 1][taskIndex]
+            self.to_do_list[month][week][day][0 if status == 'New' else 1].remove(deletedTask)
+            print(f"Task {task} has been deleted from {status} tasks")
+            
+                
 #example usage
 #create an instance of the ToDoList class
 to_do_list_student =  ToDoList()  
@@ -78,11 +98,6 @@ to_do_list_student.displayTask(selectedMonth,selectedWeek,selectedDay,selectedTa
 to_do_list_student.pinTask(selectedMonth,selectedWeek,selectedDay,'Relax')
 to_do_list_student.displayTask(selectedMonth,selectedWeek,selectedDay,selectedTasks)
 
-
-
-
-
-
-    
-
-    
+#delete task and display updated tasks
+to_do_list_student.deleteTask(selectedMonth,selectedWeek,selectedDay,'Study Lists Data Structures')
+to_do_list_student.displayTask(selectedMonth,selectedWeek,selectedDay,selectedTasks)
